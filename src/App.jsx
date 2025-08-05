@@ -299,7 +299,8 @@ const App = () => {
         setRoundCounter(1);
         setPlayer1Cooldowns({});
         setPlayer2Cooldowns({});
-        setBoardState(Array(boardRows).fill(null).map(() => Array(boardCols * 2).fill(null)));
+        // FIX: Changed 'cols' to 'boardCols' here
+        setBoardState(Array(boardRows).fill(null).map(() => Array(boardCols * 2).fill(null))); 
         setGameOver(false);
         setMessage('');
         setHighlightedCells({ attacker: null, target: null });
