@@ -20,7 +20,7 @@ const App = () => {
     const [message, setMessage] = useState('');
     const [highlightedCells, setHighlightedCells] = useState({ attacker: null, target: null });
 
-    // Constants for game dimensions and layout (simplified for web layout)
+    // Constants for game dimensions and layout
     const boardRows = 4;
     const boardCols = 3; // Each player has 3 columns
     const maxHqHealth = 1000;
@@ -311,34 +311,32 @@ const App = () => {
 
     // Component for rendering a single character card
     const CharacterCard = ({ character, isSelected, onCooldown, onClick }) => {
-        if (!character) return <div className="w-24 h-36 bg-gray-700 rounded-lg shadow-inner flex items-center justify-center text-gray-400 text-sm">Empty</div>;
+        if (!character) return <div className="character-card-empty">Empty</div>;
 
         const cardClasses = `
-            w-24 h-36 bg-white rounded-lg shadow-md flex flex-col items-center justify-between p-2 text-gray-800
-            transition-all duration-200 ease-in-out cursor-pointer relative
-            ${isSelected ? 'border-4 border-yellow-400 scale-105' : 'border border-gray-300'}
-            ${onCooldown ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105 hover:shadow-lg'}
+            character-card
+            ${isSelected ? 'selected' : ''}
+            ${onCooldown ? 'on-cooldown' : ''}
         `;
 
         return (
             <div className={cardClasses} onClick={onCooldown ? null : onClick}>
-                <div className="text-sm font-bold text-center mb-1">{character.name}</div>
-                {/* Use img tag for character image */}
+                <div className="card-name">{character.name}</div>
                 <img
                     src={character.imageUrl}
                     alt={character.name}
-                    className="w-16 h-16 object-cover rounded-full mt-1"
+                    className="character-image-on-card"
                     onError={(e) => {
-                        e.target.onerror = null; // Prevent infinite loop
-                        e.target.src = `https://placehold.co/64x64/CCCCCC/000000?text=ERR`; // Fallback image
+                        e.target.onerror = null;
+                        e.target.src = `https://placehold.co/64x64/CCCCCC/000000?text=ERR`;
                     }}
                 />
-                <div className="text-xs w-full px-1 mt-1">
-                    <div className="flex justify-between"><span>HP:</span> <span>{character.health}</span></div>
-                    <div className="flex justify-between"><span>ATK:</span> <span>{character.attack}</span></div>
+                <div className="card-stats-container">
+                    <div className="card-stat-row"><span>HP:</span> <span>{character.health}</span></div>
+                    <div className="card-stat-row"><span>ATK:</span> <span>{character.attack}</span></div>
                 </div>
                 {onCooldown && (
-                    <div className="absolute inset-0 bg-gray-800 bg-opacity-70 flex items-center justify-center rounded-lg text-white font-bold text-center text-sm p-2">
+                    <div className="cooldown-overlay">
                         Ready in R{onCooldown}
                     </div>
                 )}
@@ -349,32 +347,29 @@ const App = () => {
     // Component for rendering the game board cell
     const BoardCell = ({ character, row, col, isAttacker, isTarget, onClick }) => {
         const cellClasses = `
-            w-24 h-24 border-2 flex items-center justify-center rounded-lg relative overflow-hidden
-            ${isAttacker ? 'border-green-500 bg-green-900 bg-opacity-20' : ''}
-            ${isTarget ? 'border-red-500 bg-red-900 bg-opacity-20' : ''}
-            ${!isAttacker && !isTarget ? 'border-gray-600 bg-gray-700 hover:bg-gray-600' : ''}
-            transition-all duration-300 ease-in-out
+            board-cell
+            ${isAttacker ? 'attacker-highlight' : ''}
+            ${isTarget ? 'target-highlight' : ''}
         `;
 
         return (
             <div className={cellClasses} onClick={onClick}>
                 {character ? (
                     <>
-                        {/* Use img tag for character image on board */}
                         <img
                             src={character.imageUrl}
                             alt={character.name}
-                            className="w-20 h-20 object-cover rounded-full"
+                            className="character-image-on-board"
                             onError={(e) => {
-                                e.target.onerror = null; // Prevent infinite loop
-                                e.target.src = `https://placehold.co/80x80/CCCCCC/000000?text=ERR`; // Fallback image
+                                e.target.onerror = null;
+                                e.target.src = `https://placehold.co/80x80/CCCCCC/000000?text=ERR`;
                             }}
                         />
-                        <div className="absolute top-1 left-1 text-xs text-white bg-black bg-opacity-50 px-1 rounded">HP: {character.health}</div>
-                        <div className="absolute bottom-1 left-1 text-xs text-white bg-black bg-opacity-50 px-1 rounded">ATK: {character.attack}</div>
+                        <div className="character-stats-hp">HP: {character.health}</div>
+                        <div className="character-stats-atk">ATK: {character.attack}</div>
                     </>
                 ) : (
-                    <span className="text-gray-500 text-3xl font-bold">+</span>
+                    <span className="cell-plus-icon">+</span>
                 )}
             </div>
         );
@@ -382,40 +377,40 @@ const App = () => {
 
     // Render the main game UI
     return (
-        <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-4">
-            <div className="bg-gray-800 rounded-3xl shadow-2xl p-8 flex flex-col items-center gap-6 w-full max-w-6xl">
-                <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600 mb-4">
+        <div className="game-bg">
+            <div className="game-container">
+                <h1 className="game-title">
                     Marvel Grid Battle
                 </h1>
 
-                <div className="flex justify-around w-full text-2xl font-semibold mb-4">
-                    <div>Round: <span className="text-yellow-400">{roundCounter}</span></div>
-                    <div>Current Player: <span className={`font-bold ${currentPlayer === 1 ? 'text-blue-400' : 'text-red-400'}`}>Player {currentPlayer}</span></div>
+                <div className="game-info-bar">
+                    <div>Round: <span className="round-counter-text">{roundCounter}</span></div>
+                    <div>Current Player: <span className={`player-turn-text ${currentPlayer === 1 ? 'player1' : 'player2'}`}>Player {currentPlayer}</span></div>
                 </div>
 
-                <div className="relative w-full flex justify-between items-start gap-8">
-                    {/* Player 1 Area */}
-                    <div className="flex flex-col items-center gap-4 w-1/2">
-                        <h2 className="text-3xl font-bold text-blue-400">Player 1 (Avengers)</h2>
-                        <div className="flex items-center gap-4 w-full">
+                {/* Main game area with explicit player sections */}
+                <div className="main-game-area">
+                    {/* Player 1 Section */}
+                    <div className="player-section">
+                        <h2 className="player-section-title player1">Player 1 (Avengers)</h2>
+                        <div className="player-board-area">
                             {/* Player 1 HQ */}
                             <div className={`
-                                w-24 h-96 bg-gray-700 rounded-lg flex flex-col items-center justify-center p-2 shadow-inner
-                                ${highlightedCells.target === 'p1_hq' ? 'border-4 border-red-500' : 'border-2 border-gray-600'}
-                                transition-all duration-300 ease-in-out
+                                hq-container
+                                ${highlightedCells.target === 'p1_hq' ? 'target-highlight' : ''}
                             `}>
-                                <h3 className="text-lg font-semibold text-gray-300 mb-2">HQ</h3>
-                                <div className="w-20 h-4 bg-gray-500 rounded-full overflow-hidden">
+                                <h3 className="hq-title">HQ</h3>
+                                <div className="hq-health-bar-bg">
                                     <div
-                                        className="h-full bg-green-500 transition-all duration-300"
+                                        className="hq-health-bar-fill"
                                         style={{ width: `${(player1HqHealth / maxHqHealth) * 100}%` }}
                                     ></div>
                                 </div>
-                                <div className="text-sm text-white mt-1">{player1HqHealth}/{maxHqHealth}</div>
+                                <div className="hq-health-text">{player1HqHealth}/{maxHqHealth}</div>
                             </div>
 
-                            {/* Player 1 Board */}
-                            <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${boardCols}, minmax(0, 1fr))` }}>
+                            {/* Player 1 Board Grid */}
+                            <div className="board-grid" style={{ gridTemplateColumns: `repeat(${boardCols}, minmax(0, 1fr))` }}>
                                 {Array(boardRows).fill(null).map((_, r) =>
                                     Array(boardCols).fill(null).map((_, c) => (
                                         <BoardCell
@@ -433,15 +428,15 @@ const App = () => {
                         </div>
                         {/* Player 1 Cards (Conditional Rendering) */}
                         {currentPlayer === 1 && (
-                            <div className="flex items-center gap-2 mt-4 w-full justify-center">
+                            <div className="card-carousel">
                                 <button
-                                    className="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-full shadow-md transition-colors disabled:opacity-50"
+                                    className="carousel-button"
                                     onClick={() => setPlayer1CharIndex(prev => Math.max(0, prev - 1))}
                                     disabled={player1CharIndex === 0 || currentPlayer !== 1 || gameOver || isAttackingRef.current}
                                 >
                                     <i className="fas fa-chevron-left"></i>
                                 </button>
-                                <div className="flex gap-4">
+                                <div className="card-display-area">
                                     {Array(4).fill(null).map((_, i) => {
                                         const char = characters[player1CharIndex + i];
                                         const onCooldown = player1Cooldowns[char?.name];
@@ -457,7 +452,7 @@ const App = () => {
                                     })}
                                 </div>
                                 <button
-                                    className="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-full shadow-md transition-colors disabled:opacity-50"
+                                    className="carousel-button"
                                     onClick={() => setPlayer1CharIndex(prev => Math.min(maxCharIndex, prev + 1))}
                                     disabled={player1CharIndex >= maxCharIndex || currentPlayer !== 1 || gameOver || isAttackingRef.current}
                                 >
@@ -467,15 +462,12 @@ const App = () => {
                         )}
                     </div>
 
-                    {/* Dividing Line */}
-                    <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-gray-600 rounded-full -translate-x-1/2"></div>
-
-                    {/* Player 2 Area */}
-                    <div className="flex flex-col items-center gap-4 w-1/2">
-                        <h2 className="text-3xl font-bold text-red-400">Player 2 (Villains)</h2>
-                        <div className="flex items-center gap-4 w-full">
-                            {/* Player 2 Board */}
-                            <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${boardCols}, minmax(0, 1fr))` }}>
+                    {/* Player 2 Section */}
+                    <div className="player-section">
+                        <h2 className="player-section-title player2">Player 2 (Villains)</h2>
+                        <div className="player-board-area">
+                            {/* Player 2 Board Grid */}
+                            <div className="board-grid" style={{ gridTemplateColumns: `repeat(${boardCols}, minmax(0, 1fr))` }}>
                                 {Array(boardRows).fill(null).map((_, r) =>
                                     Array(boardCols).fill(null).map((_, c) => (
                                         <BoardCell
@@ -493,31 +485,30 @@ const App = () => {
 
                             {/* Player 2 HQ */}
                             <div className={`
-                                w-24 h-96 bg-gray-700 rounded-lg flex flex-col items-center justify-center p-2 shadow-inner
-                                ${highlightedCells.target === 'p2_hq' ? 'border-4 border-red-500' : 'border-2 border-gray-600'}
-                                transition-all duration-300 ease-in-out
+                                hq-container
+                                ${highlightedCells.target === 'p2_hq' ? 'target-highlight' : ''}
                             `}>
-                                <h3 className="text-lg font-semibold text-gray-300 mb-2">HQ</h3>
-                                <div className="w-20 h-4 bg-gray-500 rounded-full overflow-hidden">
+                                <h3 className="hq-title">HQ</h3>
+                                <div className="hq-health-bar-bg">
                                     <div
-                                        className="h-full bg-green-500 transition-all duration-300"
+                                        className="hq-health-bar-fill"
                                         style={{ width: `${(player2HqHealth / maxHqHealth) * 100}%` }}
                                     ></div>
                                 </div>
-                                <div className="text-sm text-white mt-1">{player2HqHealth}/{maxHqHealth}</div>
+                                <div className="hq-health-text">{player2HqHealth}/{maxHqHealth}</div>
                             </div>
                         </div>
                         {/* Player 2 Cards (Conditional Rendering) */}
                         {currentPlayer === 2 && (
-                            <div className="flex items-center gap-2 mt-4 w-full justify-center">
+                            <div className="card-carousel">
                                 <button
-                                    className="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-full shadow-md transition-colors disabled:opacity-50"
+                                    className="carousel-button"
                                     onClick={() => setPlayer2CharIndex(prev => Math.max(0, prev - 1))}
                                     disabled={player2CharIndex === 0 || currentPlayer !== 2 || gameOver || isAttackingRef.current}
                                 >
                                     <i className="fas fa-chevron-left"></i>
                                 </button>
-                                <div className="flex gap-4">
+                                <div className="card-display-area">
                                     {Array(4).fill(null).map((_, i) => {
                                         const char = characters[player2CharIndex + i];
                                         const onCooldown = player2Cooldowns[char?.name];
@@ -533,7 +524,7 @@ const App = () => {
                                     })}
                                 </div>
                                 <button
-                                    className="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-full shadow-md transition-colors disabled:opacity-50"
+                                    className="carousel-button"
                                     onClick={() => setPlayer2CharIndex(prev => Math.min(maxCharIndex, prev + 1))}
                                     disabled={player2CharIndex >= maxCharIndex || currentPlayer !== 2 || gameOver || isAttackingRef.current}
                                 >
@@ -546,17 +537,17 @@ const App = () => {
 
                 {/* Message Box */}
                 {message && (
-                    <div className="mt-6 p-4 bg-blue-600 text-white rounded-xl shadow-lg text-center font-semibold text-xl animate-pulse">
+                    <div className="message-box">
                         {message}
                     </div>
                 )}
 
                 {/* Game Over Overlay */}
                 {gameOver && (
-                    <div className="absolute inset-0 bg-black bg-opacity-70 flex flex-col items-center justify-center rounded-3xl z-10">
-                        <h2 className="text-6xl font-extrabold text-white mb-8 animate-bounce">GAME OVER!</h2>
+                    <div className="game-over-overlay">
+                        <h2 className="game-over-title">GAME OVER!</h2>
                         <button
-                            className="bg-green-500 hover:bg-green-600 text-white text-2xl font-bold py-4 px-8 rounded-full shadow-xl transition-all duration-300 transform hover:scale-105"
+                            className="play-again-button"
                             onClick={resetGame}
                         >
                             Play Again
@@ -566,7 +557,7 @@ const App = () => {
 
                 {/* Reset Button (always visible) */}
                 <button
-                    className="mt-6 bg-purple-600 hover:bg-purple-700 text-white text-lg font-bold py-3 px-6 rounded-full shadow-lg transition-colors transform hover:scale-105"
+                    className="reset-game-button"
                     onClick={resetGame}
                 >
                     Reset Game
