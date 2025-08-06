@@ -83,7 +83,6 @@ body {
   justify-content: center; /* Equivalent to Tailwind's justify-center */
   align-items: flex-start; /* Equivalent to Tailwind's items-start */
   gap: 2vmin; /* Responsive gap */
-  /* REMOVED: flex-wrap: wrap; */
 }
 
 .player-section {
@@ -96,8 +95,6 @@ body {
   border-radius: 0.75vmin; /* Responsive border-radius */
   box-shadow: 0 1vmin 1.5vmin -0.3vmin rgba(0, 0, 0, 0.1), 0 0.4vmin 0.6vmin -0.2vmin rgba(0, 0, 0, 0.05); /* Responsive shadow */
   flex: 1; /* Allows sections to grow and shrink equally */
-  /* REMOVED: width: 48%; */
-  /* REMOVED: min-width: 300px; */
 }
 
 .player-section-title {
@@ -250,12 +247,12 @@ body {
 .carousel-button {
   background-color: #2d3748; /* Equivalent to Tailwind's bg-gray-800 */
   color: white; /* Equivalent to Tailwind's text-white */
-  padding: 0.5vmin; /* Responsive padding */
+  padding: 1.5vmin; /* INCREASED PADDING */
   border-radius: 9999px; /* Equivalent to Tailwind's rounded-full */
   box-shadow: 0 0.4vmin 0.6vmin -0.1vmin rgba(0, 0, 0, 0.1), 0 0.2vmin 0.4vmin -0.2vmin rgba(0, 0, 0, 0.06); /* Responsive shadow */
   transition: background-color 0.3s ease, transform 0.2s ease; /* Equivalent to Tailwind's transition-colors */
   cursor: pointer; /* Equivalent to Tailwind's cursor-pointer */
-  font-size: 2vmin; /* Responsive font size */
+  font-size: 3vmin; /* INCREASED FONT SIZE */
 }
 
 .carousel-button:hover {

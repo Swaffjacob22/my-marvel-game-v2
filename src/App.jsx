@@ -72,172 +72,175 @@ const App = () => {
     // Function to perform attacks for Player 1
     const performAttacksP1 = useCallback(async () => {
         if (isAttackingRef.current) return;
-        isAttackingRef.current = true;
+        isAttackingRef.current = true; // Set flag to true at the beginning of attack phase
+        let gameEndedDuringAttack = false;
 
-        let gameEndedDuringAttack = false; // Flag to stop further attacks if game ends
+        try {
+            // Iterate over a copy of the current board state from the ref
+            const currentBoard = JSON.parse(JSON.stringify(boardStateRef.current));
+            let currentP2HqHealth = player2HqHealthRef.current;
 
-        // Iterate over a copy of the current board state from the ref
-        const currentBoard = JSON.parse(JSON.stringify(boardStateRef.current));
-        let currentP2HqHealth = player2HqHealthRef.current;
-
-        for (let row = 0; row < boardRows; row++) {
-            if (gameEndedDuringAttack) break;
-            for (let col = boardCols - 1; col >= 0; col--) {
+            for (let row = 0; row < boardRows; row++) {
                 if (gameEndedDuringAttack) break;
+                for (let col = boardCols - 1; col >= 0; col--) {
+                    if (gameEndedDuringAttack) break;
 
-                const attacker = currentBoard[row][col]; // Read from the local copy of the board
-                if (attacker) {
-                    // Highlight attacker
-                    setHighlightedCells({ attacker: { row, col }, target: null });
-                    await new Promise(resolve => setTimeout(resolve, 1000)); // Pause for visual effect
+                    const attacker = currentBoard[row][col]; // Read from the local copy of the board
+                    if (attacker) {
+                        // Highlight attacker
+                        setHighlightedCells({ attacker: { row, col }, target: null });
+                        await new Promise(resolve => setTimeout(resolve, 1000)); // Pause for visual effect
 
-                    let targetFound = false;
-                    let targetPos = null;
-                    // Check for targets in Player 2's corresponding row
-                    for (let i = 0; i < boardCols; i++) {
-                        const targetCol = boardCols + i;
-                        const targetCharacter = currentBoard[row][targetCol]; // Read from local copy
-                        if (targetCharacter) {
-                            console.log(`-> Player 1's ${attacker.name} attacks Player 2's ${targetCharacter.name}!`);
+                        let targetFound = false;
+                        let targetPos = null;
+                        // Check for targets in Player 2's corresponding row
+                        for (let i = 0; i < boardCols; i++) {
+                            const targetCol = boardCols + i;
+                            const targetCharacter = currentBoard[row][targetCol]; // Read from local copy
+                            if (targetCharacter) {
+                                console.log(`-> Player 1's ${attacker.name} attacks Player 2's ${targetCharacter.name}!`);
 
-                            // Update target character's health in the local copy
-                            targetCharacter.health -= attacker.attack;
-                            if (targetCharacter.health <= 0) {
-                                console.log(`-> Player 2's ${targetCharacter.name} has been defeated!`);
-                                currentBoard[row][targetCol] = null; // Remove defeated character from local copy
+                                // Update target character's health in the local copy
+                                targetCharacter.health -= attacker.attack;
+                                if (targetCharacter.health <= 0) {
+                                    console.log(`-> Player 2's ${targetCharacter.name} has been defeated!`);
+                                    currentBoard[row][targetCol] = null; // Remove defeated character from local copy
+                                }
+                                
+                                // Update the actual board state in React
+                                setBoardState(JSON.parse(JSON.stringify(currentBoard))); // Use a fresh copy to trigger render
+                                await new Promise(resolve => setTimeout(resolve, 50)); // Force re-render of character health/removal
+
+                                targetFound = true;
+                                targetPos = { row, col: targetCol };
+                                break; // Only attack the first character in the row
                             }
-                            
-                            // Update the actual board state in React
-                            setBoardState(JSON.parse(JSON.stringify(currentBoard))); // Use a fresh copy to trigger render
-                            await new Promise(resolve => setTimeout(resolve, 50)); // Force re-render of character health/removal
-
-                            targetFound = true;
-                            targetPos = { row, col: targetCol };
-                            break; // Only attack the first character in the row
                         }
-                    }
 
-                    if (!targetFound) {
-                        // If no character target, attack HQ
-                        console.log(`-> Player 1's ${attacker.name} attacks Player 2's HQ!`);
-                        currentP2HqHealth -= attacker.attack;
-                        setPlayer2HqHealth(currentP2HqHealth);
-                        await new Promise(resolve => setTimeout(resolve, 50)); // Force re-render of HQ health
+                        if (!targetFound) {
+                            // If no character target, attack HQ
+                            console.log(`-> Player 1's ${attacker.name} attacks Player 2's HQ!`);
+                            currentP2HqHealth -= attacker.attack;
+                            setPlayer2HqHealth(currentP2HqHealth);
+                            await new Promise(resolve => setTimeout(resolve, 50)); // Force re-render of HQ health
 
-                        targetPos = 'p2_hq';
-                    }
+                            targetPos = 'p2_hq';
+                        }
 
-                    // Highlight attacker and target
-                    setHighlightedCells({ attacker: { row, col }, target: targetPos });
-                    await new Promise(resolve => setTimeout(resolve, 1000)); // Pause for visual effect
-                    
-                    setHighlightedCells({ attacker: null, target: null }); // Clear highlights
-                    await new Promise(resolve => setTimeout(resolve, 50)); // Ensure highlight clear is processed
+                        // Highlight attacker and target
+                        setHighlightedCells({ attacker: { row, col }, target: targetPos });
+                        await new Promise(resolve => setTimeout(resolve, 1000)); // Pause for visual effect
+                        
+                        setHighlightedCells({ attacker: null, target: null }); // Clear highlights
+                        await new Promise(resolve => setTimeout(resolve, 50)); // Ensure highlight clear is processed
 
-                    // Check for game over after each attack
-                    if (currentP2HqHealth <= 0) {
-                        showMessage("Player 1 wins! Game Over!");
-                        setGameOver(true);
-                        gameEndedDuringAttack = true;
-                        break; // Exit inner loop
+                        // Check for game over after each attack
+                        if (currentP2HqHealth <= 0) {
+                            showMessage("Player 1 wins! Game Over!");
+                            setGameOver(true);
+                            gameEndedDuringAttack = true;
+                            break; // Exit inner loop
+                        }
                     }
                 }
             }
+        } finally {
+            isAttackingRef.current = false; // Ensure flag is reset even if game ends early
+            if (!gameEndedDuringAttack) { // Only switch player if game didn't end
+                setCurrentPlayer(2); // Switch turn to Player 2
+                await new Promise(resolve => setTimeout(resolve, 750)); // Delay after turn switch
+            }
         }
-
-        if (!gameEndedDuringAttack) {
-            setCurrentPlayer(2); // Switch turn to Player 2
-            await new Promise(resolve => setTimeout(resolve, 750)); // Delay after turn switch
-        }
-        isAttackingRef.current = false;
     }, [boardCols, boardRows, showMessage]);
 
     // Function to perform attacks for Player 2
     const performAttacksP2 = useCallback(async () => {
         if (isAttackingRef.current) return;
-        isAttackingRef.current = true;
+        isAttackingRef.current = true; // Set flag to true at the beginning of attack phase
+        let gameEndedDuringAttack = false;
 
-        let gameEndedDuringAttack = false; // Flag to stop further attacks if game ends
+        try {
+            // Iterate over a copy of the current board state from the ref
+            const currentBoard = JSON.parse(JSON.stringify(boardStateRef.current));
+            let currentP1HqHealth = player1HqHealthRef.current;
 
-        // Iterate over a copy of the current board state from the ref
-        const currentBoard = JSON.parse(JSON.stringify(boardStateRef.current));
-        let currentP1HqHealth = player1HqHealthRef.current;
-
-        for (let row = 0; row < boardRows; row++) {
-            if (gameEndedDuringAttack) break;
-            for (let col = 0; col < boardCols; col++) {
+            for (let row = 0; row < boardRows; row++) {
                 if (gameEndedDuringAttack) break;
+                for (let col = 0; col < boardCols; col++) {
+                    if (gameEndedDuringAttack) break;
 
-                const attacker = currentBoard[row][boardCols + col]; // Read from local copy
-                if (attacker) {
-                    // Highlight attacker
-                    setHighlightedCells({ attacker: { row, col: boardCols + col }, target: null });
-                    await new Promise(resolve => setTimeout(resolve, 1000)); // Pause for visual effect
+                    const attacker = currentBoard[row][boardCols + col]; // Read from local copy
+                    if (attacker) {
+                        // Highlight attacker
+                        setHighlightedCells({ attacker: { row, col: boardCols + col }, target: null });
+                        await new Promise(resolve => setTimeout(resolve, 1000)); // Pause for visual effect
 
-                    let targetFound = false;
-                    let targetPos = null;
-                    // Check for targets in Player 1's corresponding row
-                    for (let i = boardCols - 1; i >= 0; i--) {
-                        const targetCharacter = currentBoard[row][i]; // Read from local copy
-                        if (targetCharacter) {
-                            console.log(`-> Player 2's ${attacker.name} attacks Player 1's ${targetCharacter.name}!`);
+                        let targetFound = false;
+                        let targetPos = null;
+                        // Check for targets in Player 1's corresponding row (from right to left)
+                        for (let i = boardCols - 1; i >= 0; i--) {
+                            const targetCharacter = currentBoard[row][i]; // Read from local copy
+                            if (targetCharacter) {
+                                console.log(`-> Player 2's ${attacker.name} attacks Player 1's ${targetCharacter.name}!`);
 
-                            // Update target character's health in the local copy
-                            targetCharacter.health -= attacker.attack;
-                            if (targetCharacter.health <= 0) {
-                                console.log(`-> Player 1's ${targetCharacter.name} has been defeated!`);
-                                currentBoard[row][i] = null; // Remove defeated character from local copy
+                                // Update target character's health in the local copy
+                                targetCharacter.health -= attacker.attack;
+                                if (targetCharacter.health <= 0) {
+                                    console.log(`-> Player 1's ${targetCharacter.name} has been defeated!`);
+                                    currentBoard[row][i] = null; // Remove defeated character from local copy
+                                }
+
+                                // Update the actual board state in React
+                                setBoardState(JSON.parse(JSON.stringify(currentBoard))); // Use a fresh copy to trigger render
+                                await new Promise(resolve => setTimeout(resolve, 50)); // Force re-render of character health/removal
+
+                                targetFound = true;
+                                targetPos = { row, col: i };
+                                break; // Only attack the first character in the row
                             }
-
-                            // Update the actual board state in React
-                            setBoardState(JSON.parse(JSON.stringify(currentBoard))); // Use a fresh copy to trigger render
-                            await new Promise(resolve => setTimeout(resolve, 50)); // Force re-render of character health/removal
-
-                            targetFound = true;
-                            targetPos = { row, col: i };
-                            break; // Only attack the first character in the row
                         }
-                    }
 
-                    if (!targetFound) {
-                        // If no character target, attack HQ
-                        console.log(`-> Player 2's ${attacker.name} attacks Player 1's HQ!`);
-                        currentP1HqHealth -= attacker.attack;
-                        setPlayer1HqHealth(currentP1HqHealth);
-                        await new Promise(resolve => setTimeout(resolve, 50)); // Force re-render of HQ health
+                        if (!targetFound) {
+                            // If no character target, attack HQ
+                            console.log(`-> Player 2's ${attacker.name} attacks Player 1's HQ!`);
+                            currentP1HqHealth -= attacker.attack;
+                            setPlayer1HqHealth(currentP1HqHealth);
+                            await new Promise(resolve => setTimeout(resolve, 50)); // Force re-render of HQ health
 
-                        targetPos = 'p1_hq';
-                    }
+                            targetPos = 'p1_hq';
+                        }
 
-                    // Highlight attacker and target
-                    setHighlightedCells({ attacker: { row, col: boardCols + col }, target: targetPos });
-                    await new Promise(resolve => setTimeout(resolve, 1000)); // Pause for visual effect
-                    
-                    setHighlightedCells({ attacker: null, target: null }); // Clear highlights
-                    await new Promise(resolve => setTimeout(resolve, 50)); // Ensure highlight clear is processed
+                        // Highlight attacker and target
+                        setHighlightedCells({ attacker: { row, col: boardCols + col }, target: targetPos });
+                        await new Promise(resolve => setTimeout(resolve, 1000)); // Pause for visual effect
+                        
+                        setHighlightedCells({ attacker: null, target: null }); // Clear highlights
+                        await new Promise(resolve => setTimeout(resolve, 50)); // Ensure highlight clear is processed
 
-                    // Check for game over after each attack
-                    if (currentP1HqHealth <= 0) {
-                        showMessage("Player 2 wins! Game Over!");
-                        setGameOver(true);
-                        gameEndedDuringAttack = true;
-                        break; // Exit inner loop
+                        // Check for game over after each attack
+                        if (currentP1HqHealth <= 0) {
+                            showMessage("Player 2 wins! Game Over!");
+                            setGameOver(true);
+                            gameEndedDuringAttack = true;
+                            break; // Exit inner loop
+                        }
                     }
                 }
             }
+        } finally {
+            isAttackingRef.current = false; // Ensure flag is reset even if game ends early
+            if (!gameEndedDuringAttack) { // Only switch player and increment round if game didn't end
+                setCurrentPlayer(1); // Switch turn back to Player 1
+                setRoundCounter(prev => prev + 1); // Increment round after Player 2's turn completes
+                await new Promise(resolve => setTimeout(resolve, 750)); // Delay after turn switch
+            }
         }
-
-        if (!gameEndedDuringAttack) {
-            setCurrentPlayer(1); // Switch turn back to Player 1
-            setRoundCounter(prev => prev + 1); // Increment round after Player 2's turn completes
-            await new Promise(resolve => setTimeout(resolve, 750)); // Delay after turn switch
-        }
-        isAttackingRef.current = false;
     }, [boardCols, boardRows, showMessage]);
 
     // Handle character card selection or board placement
     const handleCellClick = useCallback(async (row, col, isCard = false) => {
-        if (gameOver || isAttackingRef.current) return;
+        // Buttons are disabled if game is over or an attack is in progress
+        if (gameOver || isAttackingRef.current) return; 
 
         if (isCard) {
             const character = characters[col]; // 'col' here is actually the index in the displayed cards
@@ -305,7 +308,7 @@ const App = () => {
         setHighlightedCells({ attacker: null, target: null });
         setPlayer1CharIndex(0);
         setPlayer2CharIndex(0);
-        isAttackingRef.current = false;
+        isAttackingRef.current = false; // Ensure this is reset on game reset
         showMessage("Game reset! Player 1's turn.");
     };
 
