@@ -271,7 +271,7 @@ body {
 
 .character-card {
   width: 10vmin; /* Responsive width */
-  height: 15vmin; /* Responsive height */
+  height: 14vmin; /* Adjusted height for space */
   background-color: white; /* Equivalent to Tailwind's bg-white */
   color: #374151; /* Equivalent to Tailwind's text-gray-800 */
   border-radius: 0.5vmin; /* Responsive border-radius */
@@ -305,6 +305,32 @@ body {
   box-shadow: 0 1vmin 1.5vmin -0.3vmin rgba(0, 0, 0, 0.1), 0 0.4vmin 0.6vmin -0.2vmin rgba(0, 0, 0, 0.05); /* Responsive shadow */
 }
 
+/* Styles for characters picked by the CURRENT team in selection phase */
+.character-card.already-picked-by-current-team {
+    opacity: 0.5; /* Dim it */
+    cursor: not-allowed;
+    transform: none !important; /* Override hover transform */
+    box-shadow: none !important; /* Override hover shadow */
+}
+
+.picked-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black overlay */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5vmin;
+    font-weight: bold;
+    font-size: 1.25vmin; /* Responsive font size */
+    padding: 0.5vmin;
+}
+
+
 .card-name {
   font-size: 1.25vmin; /* Responsive font size */
   font-weight: bold; /* Equivalent to Tailwind's font-bold */
@@ -320,17 +346,7 @@ body {
   margin-top: 0.25vmin; /* Responsive margin */
 }
 
-.card-stats-container {
-  font-size: 1vmin; /* Responsive font size */
-  width: 100%; /* Equivalent to Tailwind's w-full */
-  padding: 0 0.25vmin; /* Responsive padding */
-  margin-top: 0.25vmin; /* Responsive margin */
-}
-
-.card-stat-row {
-  display: flex; /* Equivalent to Tailwind's flex */
-  justify-content: space-between; /* Equivalent to Tailwind's justify-between */
-}
+/* Removed card-stats-container and character-tags from here */
 
 .cooldown-overlay {
   position: absolute; /* Equivalent to Tailwind's absolute */
@@ -437,4 +453,521 @@ body {
 .reset-game-button:hover {
   background-color: #7e22ce; /* Equivalent to Tailwind's hover:bg-purple-700 */
   transform: scale(1.05); /* Equivalent to Tailwind's hover:scale-105 */
+}
+
+/* --- New Styles for Selection Phase --- */
+
+.selection-phase-bg {
+    /* Background for selection screen, can be same or different */
+    background-color: #1a202c;
+}
+
+.selection-container {
+    /* Adjust container for selection screen if needed, wider for more cards */
+    max-width: 90vw; /* Allow it to be wider */
+    width: 100%; /* Take full width */
+    padding: 2vmin; /* Adjusted padding */
+    gap: 1.5vmin; /* Adjusted gap */
+}
+
+.pick-status-bar {
+    font-size: 3vmin;
+    font-weight: bold;
+    margin-bottom: 1.5vmin; /* Adjusted margin */
+    text-align: center;
+    width: 100%;
+}
+
+.current-picker-text.player1 {
+    color: #60a5fa; /* Blue for Player 1 */
+}
+
+.current-picker-text.player2 {
+    color: #ef4444; /* Red for Player 2 */
+}
+
+.player-teams-display {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    gap: 1.5vmin; /* Adjusted gap */
+    margin-bottom: 1.5vmin; /* Adjusted margin */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.player-team-section {
+    flex: 1; /* Distribute space evenly */
+    min-width: 45%; /* Ensure sections don't get too small */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #374151; /* Slightly lighter gray for team sections */
+    border-radius: 1vmin;
+    padding: 1vmin; /* Adjusted padding */
+    box-shadow: 0 0.5vmin 1vmin rgba(0, 0, 0, 0.3);
+}
+
+.player-team-section h3 {
+    font-size: 2.5vmin;
+    font-weight: bold;
+    margin-bottom: 0.75vmin; /* Adjusted margin */
+    color: #d1d5db;
+}
+
+.player1-team-display h3 {
+    color: #60a5fa; /* Blue for P1 team title */
+}
+
+.player2-team-display h3 {
+    color: #ef4444; /* Red for P2 team title */
+}
+
+.team-slots-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow cards to wrap */
+    gap: 0.75vmin; /* Adjusted gap */
+    justify-content: center;
+    width: 100%;
+}
+
+/* Adjust character-card for team slots if empty */
+.character-card-empty {
+    width: 10vmin;
+    height: 14vmin; /* Adjusted height */
+    background-color: #4b5563; /* Darker gray for empty slots */
+    border-radius: 0.5vmin;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    font-size: 1.5vmin;
+    border: 0.1vmin dashed #6b7280;
+}
+
+.filters-container {
+    display: flex; /* Make it a flex container */
+    flex-direction: row; /* Arrange children in a row by default */
+    justify-content: center; /* Center the filter groups */
+    align-items: flex-start; /* Align items to the start of the cross axis */
+    gap: 1.5vmin; /* Adjusted gap */
+    width: 100%;
+    margin-bottom: 1.5vmin; /* Adjusted margin */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75vmin; /* Adjusted gap */
+    flex-wrap: wrap; /* Allow filter buttons to wrap */
+}
+
+.filter-group h4 {
+    font-size: 2vmin;
+    font-weight: 600;
+    color: #d1d5db;
+    margin-right: 0.75vmin; /* Adjusted margin */
+    flex-shrink: 0; /* Prevent label from shrinking */
+}
+
+.filter-button {
+    background-color: #4b5563; /* Gray for filter buttons */
+    color: white;
+    padding: 0.8vmin 1.2vmin; /* Adjusted padding */
+    border-radius: 9999px; /* Rounded-full */
+    font-size: 1.4vmin; /* Adjusted font size */
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.filter-button:hover {
+    background-color: #6b7280; /* Darker gray on hover */
+}
+
+.filter-button.active {
+    background-color: #2563eb; /* Blue for active filter */
+    font-weight: bold;
+    box-shadow: 0 0 0.5vmin 0.2vmin rgba(37, 99, 235, 0.5); /* Glow effect */
+}
+
+.available-characters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10vmin, 1fr)); /* Responsive grid for cards */
+    gap: 1.25vmin; /* Adjusted gap */
+    width: 100%;
+    max-height: 45vmin; /* Increased max height for scrollable area */
+    overflow: hidden; /* Changed from overflow-y: hidden to overflow: hidden */
+    margin-bottom: 1.5vmin; /* Adjusted margin */
+    justify-content: center; /* Center items if not filling all columns */
+}
+
+.character-card .character-tags {
+    display: flex;
+    gap: 0.5vmin;
+    font-size: 0.8vmin; /* Smaller font for tags */
+    margin-top: 0.25vmin;
+    position: absolute; /* Position tags at the bottom */
+    bottom: 0.25vmin;
+    left: 0.5vmin;
+    right: 0.5vmin;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.character-card .tag {
+    background-color: #6b7280; /* Gray for tags */
+    color: white;
+    padding: 0.2vmin 0.5vmin;
+    border-radius: 0.25vmin;
+    white-space: nowrap;
+}
+
+.character-card .phase-tag {
+    background-color: #fbbf24; /* Yellow for phase tag */
+    color: #374151;
+    font-weight: bold;
+}
+
+.character-card.picked-by-team {
+    /* No opacity or cursor: not-allowed for full visibility in team list */
+    border-color: #9ca3af; /* Gray border for picked */
+    transform: none; /* No hover effect */
+    box-shadow: none;
+}
+
+.selection-action-buttons {
+    display: flex;
+    gap: 1.5vmin; /* Adjusted gap */
+    margin-top: 1.5vmin; /* Adjusted margin */
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.confirm-pick-button,
+.reset-selection-button,
+.start-battle-button {
+    background-color: #22c55e; /* Green for confirm */
+    color: white;
+    font-size: 2vmin;
+    font-weight: bold;
+    padding: 1.25vmin 2.5vmin;
+    border-radius: 9999px;
+    box-shadow: 0 0.5vmin 1vmin rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.confirm-pick-button:hover,
+.start-battle-button:hover {
+    background-color: #16a34a; /* Darker green on hover */
+    transform: translateY(-0.2vmin);
+}
+
+.confirm-pick-button:disabled,
+.start-battle-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.reset-selection-button {
+    background-color: #ef4444; /* Red for reset */
+}
+
+.reset-selection-button:hover {
+    background-color: #dc2626; /* Darker red on hover */
+    transform: translateY(-0.2vmin);
+}
+
+.start-battle-button {
+    background-color: #60a5fa; /* Blue for start battle */
+}
+
+.start-battle-button:hover {
+    background-color: #3b82f6; /* Darker blue on hover */
+}
+
+/* NEW: Hover Menu Styles */
+.hover-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.9); /* Darker, more opaque background */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: inherit; /* Inherit border-radius from the card */
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    pointer-events: none; /* Crucial: allows clicks to pass through when not visible */
+    padding: 0.5vmin; /* Add some padding */
+    text-align: center;
+}
+
+.character-card:hover .hover-menu {
+    opacity: 1;
+    pointer-events: auto; /* Allows interaction when hovered */
+}
+
+.hover-menu-name {
+    font-size: 1.5vmin; /* Slightly larger for name */
+    font-weight: bold;
+    margin-bottom: 0.5vmin;
+}
+
+.hover-menu-stats {
+    font-size: 1.2vmin;
+    margin-bottom: 0.5vmin;
+}
+
+.hover-menu-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4vmin;
+    font-size: 0.9vmin; /* Smaller for tags */
+}
+
+
+/* Media queries for smaller screens to adjust font sizes and padding */
+@media (max-width: 768px) {
+    .game-title {
+        font-size: 7vmin;
+    }
+    .game-info-bar {
+        font-size: 3vmin;
+    }
+    .player-section-title {
+        font-size: 4vmin;
+    }
+    .hq-title {
+        font-size: 2.5vmin;
+    }
+    .hq-health-text {
+        font-size: 2vmin;
+    }
+    .board-cell, .hq-container {
+        width: 12vmin;
+        height: 12vmin;
+    }
+    .hq-container {
+        height: 48vmin;
+    }
+    .character-image-on-board {
+        width: 10vmin;
+        height: 10vmin;
+    }
+    .character-stats-hp, .character-stats-atk {
+        font-size: 1.8vmin;
+    }
+    .character-card {
+        width: 15vmin;
+        height: 21vmin; /* Adjusted height */
+    }
+    .character-image-on-card {
+        width: 12vmin;
+        height: 12vmin;
+    }
+    .card-name {
+        font-size: 2vmin;
+    }
+    /* Removed card-stats-container and character-tags from here */
+    .cooldown-overlay {
+        font-size: 2vmin;
+    }
+    .message-box {
+        font-size: 2vmin;
+    }
+    .game-over-title {
+        font-size: 8vmin;
+    }
+    .play-again-button, .reset-game-button {
+        font-size: 2.5vmin;
+        padding: 1.5vmin 3vmin;
+    }
+    /* Selection specific adjustments */
+    .selection-container {
+        padding: 2vmin;
+    }
+    .pick-status-bar {
+        font-size: 4vmin;
+    }
+    .player-team-section h3 {
+        font-size: 3.5vmin;
+    }
+    .character-card-empty {
+        width: 15vmin;
+        height: 21vmin; /* Adjusted height */
+        font-size: 2vmin;
+    }
+    .filters-container {
+        flex-direction: column; /* Stack filters vertically on smaller screens */
+        align-items: flex-start; /* Align to left */
+        gap: 1.5vmin;
+    }
+    .filter-group h4 {
+        font-size: 2.5vmin;
+    }
+    .filter-button {
+        font-size: 2vmin;
+        padding: 1.25vmin 2vmin;
+    }
+    .available-characters-grid {
+        grid-template-columns: repeat(auto-fill, minmax(15vmin, 1fr));
+        max-height: 65vmin; /* Adjusted max height for more visibility */
+    }
+    /* Adjusted hover menu font sizes for smaller screens */
+    .hover-menu-name {
+        font-size: 2.5vmin;
+    }
+    .hover-menu-stats {
+        font-size: 2vmin;
+    }
+    .hover-menu-tags {
+        font-size: 1.5vmin;
+    }
+    .picked-overlay {
+        font-size: 3vmin;
+    }
+    .selection-action-buttons {
+        flex-direction: column;
+        gap: 2.5vmin;
+    }
+    .confirm-pick-button, .reset-selection-button, .start-battle-button {
+        font-size: 2.5vmin;
+        padding: 1.5vmin 3vmin;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-title {
+        font-size: 9vmin;
+    }
+    .game-info-bar {
+        font-size: 4vmin;
+        flex-direction: column;
+        gap: 1vmin;
+    }
+    .main-game-area {
+        flex-direction: column;
+        gap: 4vmin;
+    }
+    .player-section {
+        width: 100%;
+        min-width: unset;
+    }
+    .player-board-area {
+        flex-direction: column;
+        align-items: center;
+    }
+    .hq-container {
+        width: 15vmin;
+        height: 60vmin;
+    }
+    .board-grid {
+        grid-template-columns: repeat(3, 1fr); /* Keep 3 columns for board */
+    }
+    .board-cell {
+        width: 15vmin;
+        height: 15vmin;
+    }
+    .character-image-on-board {
+        width: 12vmin;
+        height: 12vmin;
+    }
+    .character-stats-hp, .character-stats-atk {
+        font-size: 2.2vmin;
+    }
+    .card-carousel {
+        flex-direction: column;
+        gap: 2vmin;
+    }
+    .card-display-area {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .carousel-button {
+        padding: 2.5vmin;
+        font-size: 4vmin;
+    }
+    .message-box {
+        font-size: 2.5vmin;
+    }
+    .game-over-title {
+        font-size: 10vmin;
+    }
+    .play-again-button, .reset-game-button {
+        font-size: 3vmin;
+        padding: 2vmin 4vmin;
+    }
+    /* Selection specific adjustments */
+    .selection-container {
+        padding: 1.5vmin;
+    }
+    .pick-status-bar {
+        font-size: 5vmin;
+    }
+    .player-teams-display {
+        flex-direction: column;
+        gap: 3vmin;
+    }
+    .player-team-section {
+        min-width: 100%;
+    }
+    .player-team-section h3 {
+        font-size: 4.5vmin;
+    }
+    .character-card-empty {
+        width: 20vmin;
+        height: 28vmin; /* Adjusted height */
+        font-size: 3vmin;
+    }
+    .filters-container {
+        gap: 2vmin;
+    }
+    .filter-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5vmin;
+    }
+    .filter-group h4 {
+        font-size: 3vmin;
+    }
+    .filter-button {
+        font-size: 2.5vmin;
+        padding: 1.5vmin 2.5vmin;
+    }
+    .available-characters-grid {
+        grid-template-columns: repeat(auto-fill, minmax(20vmin, 1fr));
+        max-height: 70vmin;
+    }
+    /* Adjusted hover menu font sizes for smaller screens */
+    .hover-menu-name {
+        font-size: 3.5vmin;
+    }
+    .hover-menu-stats {
+        font-size: 3vmin;
+    }
+    .hover-menu-tags {
+        font-size: 2vmin;
+    }
+    .picked-overlay {
+        font-size: 4vmin;
+    }
+    .selection-action-buttons {
+        flex-direction: column;
+        gap: 2.5vmin;
+    }
+    .confirm-pick-button, .reset-selection-button, .start-battle-button {
+        font-size: 3vmin;
+        padding: 2vmin 4vmin;
+    }
 }
