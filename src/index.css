@@ -6,6 +6,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  overflow: hidden; /* Added to prevent overall page scrolling */
 }
 
 #root {
@@ -22,40 +23,44 @@ body {
   flex-direction: column; /* Equivalent to Tailwind's flex-col */
   align-items: center; /* Equivalent to Tailwind's items-center */
   justify-content: center; /* Equivalent to Tailwind's justify-center */
-  padding: 1rem; /* Equivalent to Tailwind's p-4 */
+  padding: 1vmin; /* Responsive padding */
   min-height: 100vh; /* Equivalent to Tailwind's min-h-screen */
+  box-sizing: border-box;
 }
 
 .game-container {
   background-color: #2d3748; /* Equivalent to Tailwind's bg-gray-800 */
-  border-radius: 1.5rem; /* Equivalent to Tailwind's rounded-3xl */
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4); /* Equivalent to Tailwind's shadow-2xl */
-  padding: 2rem; /* Equivalent to Tailwind's p-8 */
+  border-radius: 1.5vmin; /* Responsive border-radius */
+  box-shadow: 0 2vmin 2.5vmin -0.5vmin rgba(0, 0, 0, 0.5), 0 1vmin 1vmin -0.5vmin rgba(0, 0, 0, 0.4); /* Responsive shadow */
+  padding: 2vmin; /* Responsive padding */
   display: flex; /* Equivalent to Tailwind's flex */
   flex-direction: column; /* Equivalent to Tailwind's flex-col */
   align-items: center; /* Equivalent to Tailwind's items-center */
-  gap: 1.5rem; /* Equivalent to Tailwind's gap-6 */
-  width: 100%; /* Equivalent to Tailwind's w-full */
-  max-width: 72rem; /* Equivalent to Tailwind's max-w-6xl */
+  gap: 1.5vmin; /* Responsive gap */
+  width: 95vw; /* Use vw to ensure it takes most of the width */
+  max-width: 72rem; /* Keep a maximum size for large monitors */
+  box-sizing: border-box;
 }
 
 .game-title {
-  font-size: 3.75rem; /* Equivalent to Tailwind's text-5xl */
+  font-size: 5vmin; /* Responsive font size */
   font-weight: 800; /* Equivalent to Tailwind's font-extrabold */
   background-image: linear-gradient(to right, #60a5fa, #a855f7); /* Equivalent to Tailwind's bg-gradient-to-r from-blue-400 to-purple-600 */
   -webkit-background-clip: text; /* Equivalent to Tailwind's bg-clip-text */
   background-clip: text;
   color: transparent; /* Equivalent to Tailwind's text-transparent */
-  margin-bottom: 1rem; /* Equivalent to Tailwind's mb-4 */
+  margin-bottom: 1vmin; /* Responsive margin */
+  text-align: center;
+  line-height: 1;
 }
 
 .game-info-bar {
   display: flex; /* Equivalent to Tailwind's flex */
   justify-content: space-around; /* Equivalent to Tailwind's justify-around */
   width: 100%; /* Equivalent to Tailwind's w-full */
-  font-size: 1.5rem; /* Equivalent to Tailwind's text-2xl */
+  font-size: 2vmin; /* Responsive font size */
   font-weight: 600; /* Equivalent to Tailwind's font-semibold */
-  margin-bottom: 1rem; /* Equivalent to Tailwind's mb-4 */
+  margin-bottom: 1vmin; /* Responsive margin */
 }
 
 .round-counter-text {
@@ -77,25 +82,29 @@ body {
   width: 100%; /* Equivalent to Tailwind's w-full */
   justify-content: center; /* Equivalent to Tailwind's justify-center */
   align-items: flex-start; /* Equivalent to Tailwind's items-start */
-  gap: 2rem; /* Equivalent to Tailwind's gap-8 */
+  gap: 2vmin; /* Responsive gap */
+  /* REMOVED: flex-wrap: wrap; */
 }
 
 .player-section {
   display: flex; /* Equivalent to Tailwind's flex */
   flex-direction: column; /* Equivalent to Tailwind's flex-col */
   align-items: center; /* Equivalent to Tailwind's items-center */
-  gap: 1rem; /* Equivalent to Tailwind's gap-4 */
-  padding: 1rem; /* Equivalent to Tailwind's p-4 */
+  gap: 1vmin; /* Responsive gap */
+  padding: 1vmin; /* Responsive padding */
   background-color: #4b5563; /* Equivalent to Tailwind's bg-gray-700 */
-  border-radius: 0.75rem; /* Equivalent to Tailwind's rounded-xl */
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Equivalent to Tailwind's shadow-lg */
-  width: 50%; /* Equivalent to Tailwind's w-1/2 */
+  border-radius: 0.75vmin; /* Responsive border-radius */
+  box-shadow: 0 1vmin 1.5vmin -0.3vmin rgba(0, 0, 0, 0.1), 0 0.4vmin 0.6vmin -0.2vmin rgba(0, 0, 0, 0.05); /* Responsive shadow */
+  flex: 1; /* Allows sections to grow and shrink equally */
+  /* REMOVED: width: 48%; */
+  /* REMOVED: min-width: 300px; */
 }
 
 .player-section-title {
-  font-size: 1.875rem; /* Equivalent to Tailwind's text-3xl */
+  font-size: 2.5vmin; /* Responsive font size */
   font-weight: bold; /* Equivalent to Tailwind's font-bold */
-  margin-bottom: 1rem; /* Equivalent to Tailwind's mb-4 */
+  margin-bottom: 1vmin; /* Responsive margin */
+  white-space: nowrap;
 }
 
 .player-section-title.player1 {
@@ -109,41 +118,41 @@ body {
 .player-board-area {
   display: flex; /* Equivalent to Tailwind's flex */
   align-items: flex-start; /* Equivalent to Tailwind's items-start */
-  gap: 1rem; /* Equivalent to Tailwind's gap-4 */
+  gap: 1vmin; /* Responsive gap */
   width: 100%; /* Equivalent to Tailwind's w-full */
 }
 
 .hq-container {
-  width: 6rem; /* Equivalent to Tailwind's w-24 */
-  height: 24rem; /* Equivalent to Tailwind's h-96 */
+  width: 8vmin; /* Responsive width */
+  height: 32vmin; /* Responsive height */
   background-color: #4a5568; /* Equivalent to Tailwind's bg-gray-600 */
-  border-radius: 0.5rem; /* Equivalent to Tailwind's rounded-lg */
+  border-radius: 0.5vmin; /* Responsive border-radius */
   display: flex; /* Equivalent to Tailwind's flex */
   flex-direction: column; /* Equivalent to Tailwind's flex-col */
   align-items: center; /* Equivalent to Tailwind's items-center */
   justify-content: center; /* Equivalent to Tailwind's justify-center */
-  padding: 0.5rem; /* Equivalent to Tailwind's p-2 */
-  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06); /* Equivalent to Tailwind's shadow-inner */
+  padding: 0.5vmin; /* Responsive padding */
+  box-shadow: inset 0 0.2vmin 0.4vmin 0 rgba(0, 0, 0, 0.06); /* Responsive shadow */
   transition: all 0.3s ease-in-out; /* Equivalent to Tailwind's transition-all duration-300 ease-in-out */
   flex-shrink: 0; /* Equivalent to Tailwind's flex-shrink-0 */
 }
 
 .hq-container.target-highlight {
-  border: 4px solid #ef4444; /* Equivalent to Tailwind's border-4 border-red-500 */
+  border: 0.4vmin solid #ef4444; /* Responsive border */
 }
 
 .hq-title {
-  font-size: 1.125rem; /* Equivalent to Tailwind's text-lg */
+  font-size: 1.5vmin; /* Responsive font size */
   font-weight: 600; /* Equivalent to Tailwind's font-semibold */
   color: #d1d5db; /* Equivalent to Tailwind's text-gray-300 */
-  margin-bottom: 0.5rem; /* Equivalent to Tailwind's mb-2 */
+  margin-bottom: 0.5vmin; /* Responsive margin */
 }
 
 .hq-health-bar-bg {
-  width: 5rem; /* Equivalent to Tailwind's w-20 */
-  height: 1rem; /* Equivalent to Tailwind's h-4 */
+  width: 6vmin; /* Responsive width */
+  height: 1.25vmin; /* Responsive height */
   background-color: #9ca3af; /* Equivalent to Tailwind's bg-gray-400 */
-  border-radius: 3.40282e38px; /* Equivalent to Tailwind's rounded-full */
+  border-radius: 9999px; /* Equivalent to Tailwind's rounded-full */
   overflow: hidden; /* Equivalent to Tailwind's overflow-hidden */
 }
 
@@ -154,25 +163,25 @@ body {
 }
 
 .hq-health-text {
-  font-size: 0.875rem; /* Equivalent to Tailwind's text-sm */
+  font-size: 1.25vmin; /* Responsive font size */
   color: white; /* Equivalent to Tailwind's text-white */
-  margin-top: 0.25rem; /* Equivalent to Tailwind's mt-1 */
+  margin-top: 0.25vmin; /* Responsive margin */
 }
 
 .board-grid {
   display: grid; /* Equivalent to Tailwind's grid */
-  gap: 0.5rem; /* Equivalent to Tailwind's gap-2 */
+  gap: 0.5vmin; /* Responsive gap */
   flex-grow: 1; /* Equivalent to Tailwind's flex-grow */
 }
 
 .board-cell {
-  width: 6rem; /* Equivalent to Tailwind's w-24 */
-  height: 6rem; /* Equivalent to Tailwind's h-24 */
-  border: 2px solid; /* Equivalent to Tailwind's border-2 */
+  width: 9vmin; /* Responsive width */
+  height: 9vmin; /* Responsive height */
+  border: 0.2vmin solid; /* Responsive border */
   display: flex; /* Equivalent to Tailwind's flex */
   align-items: center; /* Equivalent to Tailwind's items-center */
   justify-content: center; /* Equivalent to Tailwind's justify-center */
-  border-radius: 0.5rem; /* Equivalent to Tailwind's rounded-lg */
+  border-radius: 0.5vmin; /* Responsive border-radius */
   position: relative; /* Equivalent to Tailwind's relative */
   overflow: hidden; /* Equivalent to Tailwind's overflow-hidden */
   transition: all 0.3s ease-in-out; /* Equivalent to Tailwind's transition-all duration-300 ease-in-out */
@@ -199,41 +208,41 @@ body {
 
 .cell-plus-icon {
   color: #6b7280; /* Equivalent to Tailwind's text-gray-500 */
-  font-size: 3rem; /* Equivalent to Tailwind's text-3xl */
+  font-size: 3vmin; /* Responsive font size */
   font-weight: bold; /* Equivalent to Tailwind's font-bold */
 }
 
 .character-image-on-board {
-  width: 5rem; /* Equivalent to Tailwind's w-20 */
-  height: 5rem; /* Equivalent to Tailwind's h-20 */
-  object-fit: cover; /* Equivalent to Tailwind's object-cover */
-  border-radius: 3.40282e38px; /* Equivalent to Tailwind's rounded-full */
+  width: 100%; /* Fill the parent container */
+  height: 100%; /* Fill the parent container */
+  object-fit: cover;
+  border-radius: 9999px; /* Equivalent to Tailwind's rounded-full */
 }
 
 .character-stats-hp, .character-stats-atk {
   position: absolute; /* Equivalent to Tailwind's absolute */
-  font-size: 0.75rem; /* Equivalent to Tailwind's text-xs */
+  font-size: 1.25vmin; /* Responsive font size */
   color: white; /* Equivalent to Tailwind's text-white */
   background-color: rgba(0, 0, 0, 0.5); /* Equivalent to Tailwind's bg-black bg-opacity-50 */
-  padding: 0 0.25rem; /* Equivalent to Tailwind's px-1 */
-  border-radius: 0.25rem; /* Equivalent to Tailwind's rounded */
+  padding: 0 0.25vmin; /* Responsive padding */
+  border-radius: 0.25vmin; /* Responsive border-radius */
 }
 
 .character-stats-hp {
-  top: 0.25rem; /* Equivalent to Tailwind's top-1 */
-  left: 0.25rem; /* Equivalent to Tailwind's left-1 */
+  top: 0.25vmin; /* Responsive position */
+  left: 0.25vmin; /* Responsive position */
 }
 
 .character-stats-atk {
-  bottom: 0.25rem; /* Equivalent to Tailwind's bottom-1 */
-  left: 0.25rem; /* Equivalent to Tailwind's left-1 */
+  bottom: 0.25vmin; /* Responsive position */
+  left: 0.25vmin; /* Responsive position */
 }
 
 .card-carousel {
   display: flex; /* Equivalent to Tailwind's flex */
   align-items: center; /* Equivalent to Tailwind's items-center */
-  gap: 0.5rem; /* Equivalent to Tailwind's gap-2 */
-  margin-top: 1rem; /* Equivalent to Tailwind's mt-4 */
+  gap: 0.5vmin; /* Responsive gap */
+  margin-top: 1vmin; /* Responsive margin */
   width: 100%; /* Equivalent to Tailwind's w-full */
   justify-content: center; /* Equivalent to Tailwind's justify-center */
 }
@@ -241,11 +250,12 @@ body {
 .carousel-button {
   background-color: #2d3748; /* Equivalent to Tailwind's bg-gray-800 */
   color: white; /* Equivalent to Tailwind's text-white */
-  padding: 0.5rem; /* Equivalent to Tailwind's p-2 */
-  border-radius: 3.40282e38px; /* Equivalent to Tailwind's rounded-full */
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06); /* Equivalent to Tailwind's shadow-md */
+  padding: 0.5vmin; /* Responsive padding */
+  border-radius: 9999px; /* Equivalent to Tailwind's rounded-full */
+  box-shadow: 0 0.4vmin 0.6vmin -0.1vmin rgba(0, 0, 0, 0.1), 0 0.2vmin 0.4vmin -0.2vmin rgba(0, 0, 0, 0.06); /* Responsive shadow */
   transition: background-color 0.3s ease, transform 0.2s ease; /* Equivalent to Tailwind's transition-colors */
   cursor: pointer; /* Equivalent to Tailwind's cursor-pointer */
+  font-size: 2vmin; /* Responsive font size */
 }
 
 .carousel-button:hover {
@@ -259,33 +269,33 @@ body {
 
 .card-display-area {
   display: flex; /* Equivalent to Tailwind's flex */
-  gap: 1rem; /* Equivalent to Tailwind's gap-4 */
+  gap: 1vmin; /* Responsive gap */
 }
 
 .character-card {
-  width: 6rem; /* Equivalent to Tailwind's w-24 */
-  height: 9rem; /* Equivalent to Tailwind's h-36 */
+  width: 10vmin; /* Responsive width */
+  height: 15vmin; /* Responsive height */
   background-color: white; /* Equivalent to Tailwind's bg-white */
   color: #374151; /* Equivalent to Tailwind's text-gray-800 */
-  border-radius: 0.5rem; /* Equivalent to Tailwind's rounded-lg */
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06); /* Equivalent to Tailwind's shadow-md */
+  border-radius: 0.5vmin; /* Responsive border-radius */
+  box-shadow: 0 0.4vmin 0.6vmin -0.1vmin rgba(0, 0, 0, 0.1), 0 0.2vmin 0.4vmin -0.2vmin rgba(0, 0, 0, 0.06); /* Responsive shadow */
   display: flex; /* Equivalent to Tailwind's flex */
   flex-direction: column; /* Equivalent to Tailwind's flex-col */
   align-items: center; /* Equivalent to Tailwind's items-center */
   justify-content: space-between; /* Equivalent to Tailwind's justify-between */
-  padding: 0.5rem; /* Equivalent to Tailwind's p-2 */
+  padding: 0.5vmin; /* Responsive padding */
   position: relative; /* Equivalent to Tailwind's relative */
   transition: all 0.2s ease-in-out; /* Equivalent to Tailwind's transition-all duration-200 ease-in-out */
   cursor: pointer; /* Equivalent to Tailwind's cursor-pointer */
 }
 
 .character-card.selected {
-  border: 4px solid #fbbf24; /* Equivalent to Tailwind's border-4 border-yellow-400 */
+  border: 0.4vmin solid #fbbf24; /* Responsive border */
   transform: scale(1.05); /* Equivalent to Tailwind's scale-105 */
 }
 
 .character-card:not(.selected) {
-  border: 1px solid #d1d5db; /* Equivalent to Tailwind's border border-gray-300 */
+  border: 0.1vmin solid #d1d5db; /* Responsive border */
 }
 
 .character-card.on-cooldown {
@@ -295,29 +305,29 @@ body {
 
 .character-card:not(.on-cooldown):hover {
   transform: scale(1.05); /* Equivalent to Tailwind's hover:scale-105 */
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Equivalent to Tailwind's hover:shadow-lg */
+  box-shadow: 0 1vmin 1.5vmin -0.3vmin rgba(0, 0, 0, 0.1), 0 0.4vmin 0.6vmin -0.2vmin rgba(0, 0, 0, 0.05); /* Responsive shadow */
 }
 
 .card-name {
-  font-size: 0.875rem; /* Equivalent to Tailwind's text-sm */
+  font-size: 1.25vmin; /* Responsive font size */
   font-weight: bold; /* Equivalent to Tailwind's font-bold */
   text-align: center; /* Equivalent to Tailwind's text-center */
-  margin-bottom: 0.25rem; /* Equivalent to Tailwind's mb-1 */
+  margin-bottom: 0.25vmin; /* Responsive margin */
 }
 
 .character-image-on-card {
-  width: 4rem; /* Equivalent to Tailwind's w-16 */
-  height: 4rem; /* Equivalent to Tailwind's h-16 */
-  object-fit: cover; /* Equivalent to Tailwind's object-cover */
-  border-radius: 3.40282e38px; /* Equivalent to Tailwind's rounded-full */
-  margin-top: 0.25rem; /* Equivalent to Tailwind's mt-1 */
+  width: 8vmin; /* Responsive width */
+  height: 8vmin; /* Responsive height */
+  object-fit: cover;
+  border-radius: 9999px; /* Equivalent to Tailwind's rounded-full */
+  margin-top: 0.25vmin; /* Responsive margin */
 }
 
 .card-stats-container {
-  font-size: 0.75rem; /* Equivalent to Tailwind's text-xs */
+  font-size: 1vmin; /* Responsive font size */
   width: 100%; /* Equivalent to Tailwind's w-full */
-  padding: 0 0.25rem; /* Equivalent to Tailwind's px-1 */
-  margin-top: 0.25rem; /* Equivalent to Tailwind's mt-1 */
+  padding: 0 0.25vmin; /* Responsive padding */
+  margin-top: 0.25vmin; /* Responsive margin */
 }
 
 .card-stat-row {
@@ -332,24 +342,24 @@ body {
   display: flex; /* Equivalent to Tailwind's flex */
   align-items: center; /* Equivalent to Tailwind's items-center */
   justify-content: center; /* Equivalent to Tailwind's justify-center */
-  border-radius: 0.5rem; /* Equivalent to Tailwind's rounded-lg */
+  border-radius: 0.5vmin; /* Responsive border-radius */
   color: white; /* Equivalent to Tailwind's text-white */
   font-weight: bold; /* Equivalent to Tailwind's font-bold */
   text-align: center; /* Equivalent to Tailwind's text-center */
-  font-size: 0.875rem; /* Equivalent to Tailwind's text-sm */
-  padding: 0.5rem; /* Equivalent to Tailwind's p-2 */
+  font-size: 1.25vmin; /* Responsive font size */
+  padding: 0.5vmin; /* Responsive padding */
 }
 
 .message-box {
-  margin-top: 1.5rem; /* Equivalent to Tailwind's mt-6 */
-  padding: 1rem; /* Equivalent to Tailwind's p-4 */
+  margin-top: 1.5vmin; /* Responsive margin */
+  padding: 1vmin; /* Responsive padding */
   background-color: #2563eb; /* Equivalent to Tailwind's bg-blue-600 */
   color: white; /* Equivalent to Tailwind's text-white */
-  border-radius: 0.75rem; /* Equivalent to Tailwind's rounded-xl */
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Equivalent to Tailwind's shadow-lg */
+  border-radius: 0.75vmin; /* Responsive border-radius */
+  box-shadow: 0 1vmin 1.5vmin -0.3vmin rgba(0, 0, 0, 0.1), 0 0.4vmin 0.6vmin -0.2vmin rgba(0, 0, 0, 0.05); /* Responsive shadow */
   text-align: center; /* Equivalent to Tailwind's text-center */
   font-weight: 600; /* Equivalent to Tailwind's font-semibold */
-  font-size: 1.25rem; /* Equivalent to Tailwind's text-xl */
+  font-size: 1.5vmin; /* Responsive font size */
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; /* Equivalent to Tailwind's animate-pulse */
 }
 
@@ -371,15 +381,15 @@ body {
   flex-direction: column; /* Equivalent to Tailwind's flex-col */
   align-items: center; /* Equivalent to Tailwind's items-center */
   justify-content: center; /* Equivalent to Tailwind's justify-center */
-  border-radius: 1.5rem; /* Equivalent to Tailwind's rounded-3xl */
+  border-radius: 1.5vmin; /* Responsive border-radius */
   z-index: 10; /* Equivalent to Tailwind's z-10 */
 }
 
 .game-over-title {
-  font-size: 4rem; /* Equivalent to Tailwind's text-6xl */
+  font-size: 5vmin; /* Responsive font size */
   font-weight: 800; /* Equivalent to Tailwind's font-extrabold */
   color: white; /* Equivalent to Tailwind's text-white */
-  margin-bottom: 2rem; /* Equivalent to Tailwind's mb-8 */
+  margin-bottom: 2vmin; /* Responsive margin */
   animation: bounce 1s infinite; /* Equivalent to Tailwind's animate-bounce */
 }
 
@@ -398,11 +408,11 @@ body {
 .play-again-button {
   background-color: #22c55e; /* Equivalent to Tailwind's bg-green-500 */
   color: white; /* Equivalent to Tailwind's text-white */
-  font-size: 1.5rem; /* Equivalent to Tailwind's text-2xl */
+  font-size: 2vmin; /* Responsive font size */
   font-weight: bold; /* Equivalent to Tailwind's font-bold */
-  padding: 1rem 2rem; /* Equivalent to Tailwind's py-4 px-8 */
-  border-radius: 3.40282e38px; /* Equivalent to Tailwind's rounded-full */
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* Equivalent to Tailwind's shadow-xl */
+  padding: 1vmin 2vmin; /* Responsive padding */
+  border-radius: 9999px; /* Equivalent to Tailwind's rounded-full */
+  box-shadow: 0 2vmin 2.5vmin -0.5vmin rgba(0, 0, 0, 0.1), 0 1vmin 1vmin -0.5vmin rgba(0, 0, 0, 0.04); /* Responsive shadow */
   transition: all 0.3s ease, transform 0.2s ease; /* Equivalent to Tailwind's transition-all duration-300 transform */
   cursor: pointer;
   border: none;
@@ -414,14 +424,14 @@ body {
 }
 
 .reset-game-button {
-  margin-top: 1.5rem; /* Equivalent to Tailwind's mt-6 */
+  margin-top: 1.5vmin; /* Responsive margin */
   background-color: #9333ea; /* Equivalent to Tailwind's bg-purple-600 */
   color: white; /* Equivalent to Tailwind's text-white */
-  font-size: 1.125rem; /* Equivalent to Tailwind's text-lg */
+  font-size: 1.5vmin; /* Responsive font size */
   font-weight: bold; /* Equivalent to Tailwind's font-bold */
-  padding: 0.75rem 1.5rem; /* Equivalent to Tailwind's py-3 px-6 */
-  border-radius: 3.40282e38px; /* Equivalent to Tailwind's rounded-full */
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Equivalent to Tailwind's shadow-lg */
+  padding: 0.75vmin 1.5vmin; /* Responsive padding */
+  border-radius: 9999px; /* Equivalent to Tailwind's rounded-full */
+  box-shadow: 0 1vmin 1.5vmin -0.3vmin rgba(0, 0, 0, 0.1), 0 0.4vmin 0.6vmin -0.2vmin rgba(0, 0, 0, 0.05); /* Responsive shadow */
   transition: background-color 0.3s ease, transform 0.2s ease; /* Equivalent to Tailwind's transition-colors transform */
   cursor: pointer;
   border: none;
